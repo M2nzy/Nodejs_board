@@ -1,29 +1,27 @@
 var express = require('express');
 var path = require('path');
-var mongoose = require('mongoose');
 var app = express();
 
-// router test
-var router = require('./routes/index')(app);
-
-app.set('views', __dirname + '/views');
+// Set router
+var router = require('./routes/index');
 
 app.set('view engine', 'ejs');
-app.engine('html', require('ejs').renderFile);
+app.set('views', path.join(__dirname, 'views'));
 
-/*
-mongoose.connect('mongodb://localhost/boards', { useNewUrlParser: true });
-var db = mongoose.connection;
+app.use('/', router);
 
-db.once("open", function () {
-    console.log("DB connected");
+// 404 Not Found
+app.use(function (req, res, next) {
+    res.status(404).send('Not Found!');
 });
-db.on("error", function (err) {
-    console.log("DB ERROR : ", err);
-})
-*/
 
-// set port and start server
-app.listen(3000, function(){
+// Server Error
+app.use(function (err, req, res, next) {
+    console.error(err.stack);
+    res.status(500).send('Server Error!');
+});
+
+// Set port and Start server
+app.listen(3000, function () {
     console.log('Server On');
 })
