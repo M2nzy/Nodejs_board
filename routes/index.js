@@ -19,6 +19,7 @@ router.get('/', function (req, res) {
 // Print post (no=?)
 router.get('/board/:no', function (req, res) {
     var no = req.params.no;
+
     connection.query('SELECT title, id, date, hit, content from board WHERE no="' + no + '"', function (err, results) {
         if (err) console.error("query error : " + err);
         else {
@@ -40,10 +41,41 @@ router.post('/board', function (req, res) {
     });
 });
 
-// Enter ID and PASSWORD to delete
-router.get('/delete/:no', function(req, res){
+// Enter what you want to edit
+router.get('/update/:no', function (req, res) {
     var no = req.params.no;
-    res.render('delete', { no : no });
+
+    connection.query('SELECT title, id, password, content, date from board WHERE no="' + no + '"', function (err, results) {
+        if (err) console.error("query error : " + err);
+        else {
+            res.render('update', { no: no, title: results[0].title, id: results[0].id, content: results[0].content });
+        }
+    });
+});
+
+// Update post page (no=?)
+router.post('/update/:no', function (req, res) {
+    var no = req.params.no;
+    var PASSWORD = req.body.password;
+
+    connection.query('SELECT password FROM board WHERE no="' + no + '"', function (err, results) {
+        // PASSWORD correct => Update
+        if (results[0].password === PASSWORD) {
+            connection.query('UPDATE board SET title="' + req.body.title + '", content="' + req.body.content + '" WHERE no="' + no + '"', function(err, results){
+                if (err) console.error("query error : " + err);
+                res.redirect('/');
+            });
+        }
+        else {
+            res.redirect('/');
+        }
+    });
+});
+
+// Enter ID and PASSWORD to delete
+router.get('/delete/:no', function (req, res) {
+    var no = req.params.no;
+    res.render('delete', { no: no });
 });
 
 // Delete post page (no=?)
@@ -51,6 +83,7 @@ router.post('/delete/:no', function (req, res) {
     var no = req.params.no;
     var ID = req.body.id;
     var PASSWORD = req.body.password;
+
     connection.query('SELECT id, password FROM board WHERE no="' + no + '"', function (err, results) {
         // ID, PASSWORD correct => Delete
         if (results[0].password === PASSWORD && results[0].id === ID) {
