@@ -3,12 +3,10 @@
         <% include ./part/header %>
     </head>
     <body>
-        <form method="POST" action="/board">
-            <p><input type="text" name="title" placeholder="TITLE" /></p>
+        <form method="POST" action="/delete/<%= no %>">
             <p><input type="text" name="id" placeholder="ID"/></p>
             <p><input type="password" name="password" placeholder="PASSWORD" /></p>
-            <p><textarea name="content" cols="40" rows="10"></textarea></p>
-            <p><input type="submit" value="OK" /></p>
+            <p><input type="submit" value="DELETE" /></p>
             <a href="/">MAIN</a>
         </form>
     </body>

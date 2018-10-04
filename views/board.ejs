@@ -1,13 +1,14 @@
 <%# Print post matching the parameters %>
 <html>
-    <head>
+    <head> 
         <% include ./part/header %>
     </head>
     <body>
-        <h3>Title : <%= data[0].title %></h3>
-        <p>Hit : <%= data[0].hit %> ID : <%= data[0].id %></p>
-        <p>Date : <%= data[0].date %></p>
-        <p><%= data[0].content %></p>
-        <a href='/'>MAIN</a> <%# <a href='/update/:no'>UPDATE</a> <a href='/delete'>DELETE</a> %>
+    <h3><%= no %>.</h3>
+        <h3>Title : <%= title %></h3>
+        <p>Hit : <%= hit %> ID : <%= id %></p>
+        <p>Date : <%= date %></p>
+        <p><%= content %></p>
+        <a href='/'>MAIN</a> <a href='/delete/<%= no %>'>DELETE</a>
     </body>
 </html>
